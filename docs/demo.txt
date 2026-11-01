@@ -1,0 +1,69 @@
+
+  unlisted  demo/registry.yml · 16 services declared
+
+  ● cloudflared 10 rules   ● caddy 5 sites   ● nginx 2 sites
+  ● docker 11 containers   ● proc 29 listening   ● systemd 13 units
+
+  UNREGISTERED  9  exposed, but not in your registry
+  ──────────────────────────────────────────────────────────────────────────────
+  ▌ HIGH     old-wiki.example.com
+  ▌          served via tunnel → localhost:8087 · no auth detected
+  ▌          /etc/cloudflared/config.yml:23
+  ▌          fix add it to the registry, or remove the tunnel ingress rule
+
+  ▌ HIGH     phpmyadmin.example.com
+  ▌          served via nginx → 127.0.0.1:8088 · no auth detected
+  ▌          /etc/nginx/sites-enabled/phpmyadmin:9
+  ▌          fix add it to the registry, or remove the nginx server block
+
+  ▌ MEDIUM   grafana-dev.example.com
+  ▌          served via caddy → localhost:3100 · auth detected (forward_auth)
+  ▌          /etc/caddy/Caddyfile:19
+  ▌          fix add it to the registry, or remove the Caddy site
+
+  listening ports
+  ● :6379  redis                    0.0.0.0 · docker redis:7-alpine · Redis
+  ● :1880  node-red                 0.0.0.0 · docker nodered/node-red:3
+  ● :9000  portainer                0.0.0.0 · docker portainer/portainer-ce:2.20
+  ● :445   smbd                     0.0.0.0 · smbd.service
+  ● :1883  mosquitto                0.0.0.0 · mosquitto.service
+  ● :8765  python3 http.server      0.0.0.0
+
+  DEAD  2  in your registry, but nothing serves it
+  ──────────────────────────────────────────────────────────────────────────────
+  ▌ MEDIUM   Gitea  git.example.com
+  ▌          no tunnel or proxy rule serves git.example.com
+  ▌          demo/registry.yml:64
+  ▌          fix remove it from the registry, or restore the rule
+
+  ▌ MEDIUM   Mealie  recipes.example.com
+  ▌          tunnel → localhost:9925, but nothing is listening on port 9925
+  ▌          demo/registry.yml:70  ·  /etc/cloudflared/config.yml:13
+  ▌          fix start the service, or remove the rule and the registry entry
+
+  NOAUTH  2  reachable with no auth detected in front
+  ──────────────────────────────────────────────────────────────────────────────
+  ▌ MEDIUM   Dozzle  logs.example.com
+  ▌          tunnel → localhost:9999 · no auth detected, none declared
+  ▌          demo/registry.yml:60  ·  /etc/cloudflared/config.yml:21
+  ▌          fix declare auth: in the registry (auth: none to accept it)
+
+  ▌ MEDIUM   qBittorrent  qbit.example.com
+  ▌          caddy → localhost:8112 · no auth detected, none declared
+  ▌          demo/registry.yml:56  ·  /etc/caddy/Caddyfile:28
+  ▌          fix declare auth: in the registry (auth: none to accept it)
+
+  DRIFT  2  registry and reality disagree on the port
+  ──────────────────────────────────────────────────────────────────────────────
+  ▌ MEDIUM   Nextcloud  cloud.example.com
+  ▌          registry says port 8080, caddy routes it to localhost:8081
+  ▌          demo/registry.yml:20  ·  /etc/caddy/Caddyfile:24
+  ▌          fix set port: 8081 in the registry, or point the rule back at 8080
+
+  ▌ MEDIUM   Paperless  docs.example.com
+  ▌          registry says port 8000, tunnel routes it to localhost:8010
+  ▌          demo/registry.yml:25  ·  /etc/cloudflared/config.yml:11
+  ▌          fix set port: 8010 in the registry, or point the rule back at 8000
+
+  ✗ 15 findings  9 unregistered · 2 dead · 2 noauth · 2 drift
+

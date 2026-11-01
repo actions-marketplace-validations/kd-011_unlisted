@@ -1,0 +1,16 @@
+bare.example.com
+
+one.example.com {
+	handle /static/* {
+		file_server
+	}
+	reverse_proxy localhost:8001
+}
+
+(snip) {
+	encode gzip
+}
+
+two.example.com {
+	reverse_proxy localhost:8002
+}

@@ -1,0 +1,82 @@
+# The services I say I run. Neutral example data: nothing here is a real host.
+services:
+  - name: Jellyfin
+    host: jellyfin.example.com
+    port: 8096
+    auth: app
+    owner: media
+
+  - name: Home Assistant
+    host: ha.example.com
+    port: 8123
+    auth: app
+
+  - name: Vaultwarden
+    host: vault.example.com
+    port: 8222
+    auth: app
+    note: passwords, keep it boring
+
+  - name: Nextcloud
+    host: cloud.example.com
+    port: 8080
+    auth: app
+
+  - name: Paperless
+    host: docs.example.com
+    port: 8000
+    auth: app
+
+  - name: Grafana
+    host: grafana.example.com
+    port: 3000
+    auth: proxy
+    note: behind the SSO forward_auth
+
+  - name: Sonarr
+    host: sonarr.example.com
+    port: 8989
+
+  - name: Pi-hole
+    host: pihole.example.com
+    port: 8053
+    auth: proxy
+
+  - name: Uptime Kuma
+    host: status.example.com
+    port: 3001
+    auth: none
+    note: public status page on purpose
+
+  - name: Synology NAS
+    host: nas.example.com
+    url: https://192.168.1.20:5001
+    auth: app
+
+  - name: qBittorrent
+    host: qbit.example.com
+    port: 8112
+
+  - name: Dozzle
+    host: logs.example.com
+    port: 9999
+
+  - name: Gitea
+    host: git.example.com
+    port: 3002
+    auth: app
+    note: moved to the NAS in the spring
+
+  - name: Mealie
+    host: recipes.example.com
+    port: 9925
+    auth: app
+
+  - name: SSH
+    port: 22
+    auth: app
+
+  - name: Test VM
+    host: test.example.com
+    port: 7777
+    ignore: true

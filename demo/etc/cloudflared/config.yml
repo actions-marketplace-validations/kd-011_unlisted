@@ -1,0 +1,27 @@
+tunnel: 6f1c2f0e-0000-4000-8000-0123456789ab
+credentials-file: /etc/cloudflared/6f1c2f0e.json
+
+ingress:
+  - hostname: jellyfin.example.com
+    service: http://localhost:8096
+  - hostname: ha.example.com
+    service: http://localhost:8123
+  - hostname: vault.example.com
+    service: http://localhost:8222
+  - hostname: docs.example.com
+    service: http://localhost:8010
+  - hostname: recipes.example.com
+    service: http://localhost:9925
+  - hostname: nas.example.com
+    service: https://192.168.1.20:5001
+    originRequest:
+      noTLSVerify: true
+  - hostname: status.example.com
+    service: http://localhost:3001
+  - hostname: logs.example.com
+    service: http://localhost:9999
+  - hostname: old-wiki.example.com
+    service: http://localhost:8087
+  - hostname: test.example.com
+    service: http://localhost:7777
+  - service: http_status:404

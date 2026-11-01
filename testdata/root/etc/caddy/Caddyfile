@@ -1,0 +1,4 @@
+wiki.example.com {
+	forward_auth localhost:9091
+	reverse_proxy localhost:3000
+}

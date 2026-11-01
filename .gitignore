@@ -1,2 +1,8 @@
-.shots/
+# build output
+/unlisted
 dist/
+.shots/
+
+# local scratch
+*.local.yml
+.cache/

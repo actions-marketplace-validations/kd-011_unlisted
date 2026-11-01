@@ -1,0 +1,25 @@
+{
+	email admin@example.com
+}
+
+(common) {
+	encode gzip
+	header -Server
+}
+
+(gate) {
+	forward_auth localhost:9091
+}
+
+import common
+
+a.example.com {
+	import common
+	import gate
+	reverse_proxy localhost:8001
+}
+
+b.example.com {
+	import common
+	reverse_proxy localhost:8002
+}

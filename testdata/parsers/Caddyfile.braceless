@@ -1,0 +1,9 @@
+# The single-site form: an address, then its directives, no braces.
+single.example.com
+basic_auth {
+	bob JDJhJDE0JHdoYXRldmVy
+}
+handle /static/* {
+	file_server
+}
+reverse_proxy localhost:8080

@@ -1,0 +1,87 @@
+{
+	email admin@example.com
+	servers {
+		metrics
+	}
+}
+
+(auth) {
+	forward_auth authelia:9091 {
+		uri /api/verify
+	}
+}
+
+# plain proxy
+app.example.com {
+	reverse_proxy localhost:8080
+}
+
+# two addresses, scheme, trailing comma style, matcher before the upstream
+https://one.example.com, two.example.com:8443 {
+	reverse_proxy /api/* 127.0.0.1:9000 127.0.0.1:9001
+	reverse_proxy localhost:3000
+}
+
+secure.example.com {
+	import auth
+	reverse_proxy http://10.0.0.5:8123
+}
+
+basic.example.com {
+	basic_auth /admin/* {
+		bob JDJhJDE0JHdoYXRldmVy
+	}
+	handle /static/* {
+		file_server
+	}
+	reverse_proxy localhost:5000
+}
+
+wholesite.example.com {
+	basic_auth {
+		bob JDJhJDE0JHdoYXRldmVy
+	}
+	reverse_proxy localhost:5200
+}
+
+handled.example.com {
+	handle /secure/* {
+		forward_auth localhost:9091
+	}
+	handle {
+		reverse_proxy localhost:5100
+	}
+}
+
+named.example.com {
+	@admin path /admin/*
+	basic_auth @admin {
+		bob JDJhJDE0JHdoYXRldmVy
+	}
+	reverse_proxy localhost:5300
+}
+
+static.example.com {
+	root * /srv/www
+	file_server
+}
+
+:9090 {
+	respond "metrics"
+}
+
+localhost {
+	respond "dev"
+}
+
+{$SITE_HOST:fallback.example.com} {
+	reverse_proxy {$BACKEND}:80
+}
+
+{$UNSET_HOST} {
+	respond "never"
+}
+
+*.wild.example.com {
+	reverse_proxy localhost:7000 # trailing comment
+}

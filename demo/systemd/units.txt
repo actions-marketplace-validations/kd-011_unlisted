@@ -1,0 +1,13 @@
+caddy.service                 loaded active running Caddy web server
+cloudflared.service           loaded active running cloudflared tunnel
+docker.service                loaded active running Docker Application Container Engine
+grafana-server.service        loaded active running Grafana instance
+home-assistant.service        loaded active running Home Assistant
+mosquitto.service             loaded active running Mosquitto MQTT broker
+nginx.service                 loaded active running A high performance web server
+pihole-FTL.service            loaded active running Pi-hole FTL
+qbittorrent-nox.service       loaded active running qBittorrent-nox
+smbd.service                  loaded active running Samba SMB Daemon
+sonarr.service                loaded active running Sonarr
+ssh.service                   loaded active running OpenBSD Secure Shell server
+vaultwarden.service           loaded active running Vaultwarden

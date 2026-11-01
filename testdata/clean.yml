@@ -1,0 +1,19 @@
+services:
+  - name: App
+    host: app.example.com
+    port: 8080
+    auth: app
+  - name: NAS
+    host: nas.example.com
+    url: https://192.168.1.20:5001
+    auth: app
+  - name: Wiki
+    host: wiki.example.com
+    port: 3000
+  - name: Blog
+    host: blog.example.com
+    port: 2368
+    auth: none
+  - name: SSH
+    port: 22
+    auth: app

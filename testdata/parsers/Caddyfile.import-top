@@ -1,0 +1,10 @@
+# A top-level import must never be read as a site address.
+import common
+
+one.example.com {
+	reverse_proxy localhost:8001
+}
+
+two.example.com {
+	reverse_proxy localhost:8002
+}

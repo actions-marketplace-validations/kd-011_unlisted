@@ -1,0 +1,178 @@
+[
+ {
+  "Names": [
+   "/jellyfin"
+  ],
+  "Image": "jellyfin/jellyfin:10.9",
+  "Ports": [
+   {
+    "IP": "0.0.0.0",
+    "PrivatePort": 8096,
+    "PublicPort": 8096,
+    "Type": "tcp"
+   },
+   {
+    "IP": "::",
+    "PrivatePort": 8096,
+    "PublicPort": 8096,
+    "Type": "tcp"
+   }
+  ]
+ },
+ {
+  "Names": [
+   "/paperless"
+  ],
+  "Image": "paperlessngx/paperless-ngx:2",
+  "Ports": [
+   {
+    "IP": "127.0.0.1",
+    "PrivatePort": 8000,
+    "PublicPort": 8010,
+    "Type": "tcp"
+   }
+  ]
+ },
+ {
+  "Names": [
+   "/nextcloud"
+  ],
+  "Image": "nextcloud:29-apache",
+  "Ports": [
+   {
+    "IP": "127.0.0.1",
+    "PrivatePort": 80,
+    "PublicPort": 8081,
+    "Type": "tcp"
+   }
+  ]
+ },
+ {
+  "Names": [
+   "/dozzle"
+  ],
+  "Image": "amir20/dozzle:latest",
+  "Ports": [
+   {
+    "IP": "127.0.0.1",
+    "PrivatePort": 8080,
+    "PublicPort": 9999,
+    "Type": "tcp"
+   }
+  ]
+ },
+ {
+  "Names": [
+   "/dokuwiki"
+  ],
+  "Image": "dokuwiki/dokuwiki:stable",
+  "Ports": [
+   {
+    "IP": "127.0.0.1",
+    "PrivatePort": 8080,
+    "PublicPort": 8087,
+    "Type": "tcp"
+   }
+  ]
+ },
+ {
+  "Names": [
+   "/phpmyadmin"
+  ],
+  "Image": "phpmyadmin:5",
+  "Ports": [
+   {
+    "IP": "127.0.0.1",
+    "PrivatePort": 80,
+    "PublicPort": 8088,
+    "Type": "tcp"
+   }
+  ]
+ },
+ {
+  "Names": [
+   "/grafana-dev"
+  ],
+  "Image": "grafana/grafana:11.1.0",
+  "Ports": [
+   {
+    "IP": "127.0.0.1",
+    "PrivatePort": 3000,
+    "PublicPort": 3100,
+    "Type": "tcp"
+   }
+  ]
+ },
+ {
+  "Names": [
+   "/redis"
+  ],
+  "Image": "redis:7-alpine",
+  "Ports": [
+   {
+    "IP": "0.0.0.0",
+    "PrivatePort": 6379,
+    "PublicPort": 6379,
+    "Type": "tcp"
+   },
+   {
+    "IP": "::",
+    "PrivatePort": 6379,
+    "PublicPort": 6379,
+    "Type": "tcp"
+   }
+  ]
+ },
+ {
+  "Names": [
+   "/portainer"
+  ],
+  "Image": "portainer/portainer-ce:2.20",
+  "Ports": [
+   {
+    "IP": "0.0.0.0",
+    "PrivatePort": 9000,
+    "PublicPort": 9000,
+    "Type": "tcp"
+   },
+   {
+    "IP": "::",
+    "PrivatePort": 9000,
+    "PublicPort": 9000,
+    "Type": "tcp"
+   }
+  ]
+ },
+ {
+  "Names": [
+   "/node-red"
+  ],
+  "Image": "nodered/node-red:3",
+  "Ports": [
+   {
+    "IP": "0.0.0.0",
+    "PrivatePort": 1880,
+    "PublicPort": 1880,
+    "Type": "tcp"
+   },
+   {
+    "IP": "::",
+    "PrivatePort": 1880,
+    "PublicPort": 1880,
+    "Type": "tcp"
+   }
+  ]
+ },
+ {
+  "Names": [
+   "/watchtower"
+  ],
+  "Image": "containrrr/watchtower",
+  "Ports": [
+   {
+    "PrivatePort": 8080,
+    "Type": "tcp"
+   }
+  ]
+ }
+]

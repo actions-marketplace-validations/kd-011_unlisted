@@ -1,0 +1,15 @@
+server {
+    listen 80;
+    server_name phpmyadmin.example.com;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 8443 ssl;
+    server_name phpmyadmin.example.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:8088;
+        proxy_set_header Host $host;
+    }
+}

@@ -1,0 +1,91 @@
+name: unlisted
+description: Diff the services in your registry against what your configs actually expose, and fail on the gaps.
+author: unlisted contributors
+branding:
+  icon: eye-off
+  color: gray-dark
+
+inputs:
+  registry:
+    description: Path to the registry file.
+    default: registry.yml
+  version:
+    description: Release tag to install, for example v0.1.0. Empty means the latest release.
+    default: ""
+  fail-on:
+    description: Finding types that fail the step (unregistered,dead,noauth,drift,cert,all,none).
+    default: all
+  format:
+    description: Report format (text, json or markdown).
+    default: text
+  cloudflared:
+    description: Path to a cloudflared config.yml in the repo.
+    default: ""
+  caddyfile:
+    description: Path to a Caddyfile in the repo.
+    default: ""
+  nginx-dir:
+    description: Path to an nginx config directory in the repo.
+    default: ""
+  config-root:
+    description: Resolve default source paths under this directory (fixture layout).
+    default: ""
+  skip:
+    description: Sources to skip. The runner is not your server, so live sources are skipped by default.
+    default: proc,docker,systemd
+
+runs:
+  using: composite
+  steps:
+    - name: Install unlisted
+      shell: bash
+      env:
+        VERSION: ${{ inputs.version }}
+        REPO: kd-011/unlisted
+      run: |
+        set -euo pipefail
+        case "$RUNNER_OS" in
+          Linux)  os=linux ;;
+          macOS)  os=darwin ;;
+          *) echo "unsupported runner OS: $RUNNER_OS" >&2; exit 2 ;;
+        esac
+        case "$RUNNER_ARCH" in
+          X64)   arch=amd64 ;;
+          ARM64) arch=arm64 ;;
+          *) echo "unsupported runner arch: $RUNNER_ARCH" >&2; exit 2 ;;
+        esac
+        if [ -n "$VERSION" ]; then
+          base="https://github.com/$REPO/releases/download/$VERSION"
+        else
+          base="https://github.com/$REPO/releases/latest/download"
+        fi
+        tmp="$(mktemp -d)"
+        curl -fsSL "$base/unlisted_${os}_${arch}.tar.gz" -o "$tmp/unlisted.tar.gz"
+        curl -fsSL "$base/checksums.txt" -o "$tmp/checksums.txt"
+        # Verify against the published checksum before running anything.
+        (cd "$tmp" && grep " unlisted_${os}_${arch}.tar.gz\$" checksums.txt | sha256sum -c -)
+        tar -xzf "$tmp/unlisted.tar.gz" -C "$tmp" unlisted
+        mkdir -p "$RUNNER_TEMP/unlisted-bin"
+        install -m 0755 "$tmp/unlisted" "$RUNNER_TEMP/unlisted-bin/unlisted"
+        echo "$RUNNER_TEMP/unlisted-bin" >> "$GITHUB_PATH"
+
+    - name: Check
+      shell: bash
+      env:
+        IN_REGISTRY: ${{ inputs.registry }}
+        IN_FAIL_ON: ${{ inputs.fail-on }}
+        IN_FORMAT: ${{ inputs.format }}
+        IN_CLOUDFLARED: ${{ inputs.cloudflared }}
+        IN_CADDYFILE: ${{ inputs.caddyfile }}
+        IN_NGINX: ${{ inputs.nginx-dir }}
+        IN_ROOT: ${{ inputs.config-root }}
+        IN_SKIP: ${{ inputs.skip }}
+      run: |
+        # Inputs go through env vars, never interpolated into the script, so a
+        # crafted value cannot inject shell.
+        args=(check -f "$IN_REGISTRY" --fail-on "$IN_FAIL_ON" --format "$IN_FORMAT" --skip "$IN_SKIP")
+        [ -n "$IN_CLOUDFLARED" ] && args+=(--cloudflared "$IN_CLOUDFLARED")
+        [ -n "$IN_CADDYFILE" ] && args+=(--caddyfile "$IN_CADDYFILE")
+        [ -n "$IN_NGINX" ] && args+=(--nginx-dir "$IN_NGINX")
+        [ -n "$IN_ROOT" ] && args+=(--config-root "$IN_ROOT")
+        unlisted "${args[@]}"

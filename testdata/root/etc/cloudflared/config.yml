@@ -1,0 +1,6 @@
+ingress:
+  - hostname: app.example.com
+    service: http://localhost:8080
+  - hostname: nas.example.com
+    service: https://192.168.1.20:5001
+  - service: http_status:404
