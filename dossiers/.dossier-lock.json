@@ -1,0 +1,335 @@
+{
+  "version": 1,
+  "docs": {
+    "unlisted": {
+      "claims": {
+        "bf45f86df975": {
+          "text": "Reports five finding types: unregistered, dead, noauth, drift and cert.",
+          "line": 14,
+          "specs": [
+            "internal/check/types.go:10-17"
+          ],
+          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "files": {
+            "internal/check/types.go": {
+              "path": "internal/check/types.go",
+              "blob": "3622112eba18be838b765aa842f7e87ea0c4676c",
+              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "range": {
+                "start": 10,
+                "end": 17,
+                "hash": "e7948052dd63320389e98123a78a47c140e550f8"
+              }
+            }
+          }
+        },
+        "876d7fd9c96b": {
+          "text": "Exits 0 when clean, 1 on findings that match `--fail-on`, and 2 on an error.",
+          "line": 15,
+          "specs": [
+            "internal/cli/cli.go:25-30"
+          ],
+          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "files": {
+            "internal/cli/cli.go": {
+              "path": "internal/cli/cli.go",
+              "blob": "e0208025b0a1888995938e0956edd8ee97f369a9",
+              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "range": {
+                "start": 25,
+                "end": 30,
+                "hash": "3a75c337dbd4a041e024762bf4f179ec4d9fcfbc"
+              }
+            }
+          }
+        },
+        "2eca5e23d2e8": {
+          "text": "Makes no network calls unless `--probe` is passed, and then contacts only hostnames from the registry.",
+          "line": 16,
+          "specs": [
+            "internal/cli/cli.go:158-160",
+            "internal/cli/cli.go:183"
+          ],
+          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "files": {
+            "internal/cli/cli.go": {
+              "path": "internal/cli/cli.go",
+              "blob": "e0208025b0a1888995938e0956edd8ee97f369a9",
+              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "range": {
+                "start": 158,
+                "end": 160,
+                "hash": "49711526b91ee0cdc6a0f16048d83c5e9fce7883"
+              }
+            },
+            "internal/cli/cli.go:183-183": {
+              "path": "internal/cli/cli.go",
+              "blob": "e0208025b0a1888995938e0956edd8ee97f369a9",
+              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "range": {
+                "start": 183,
+                "end": 183,
+                "hash": "5c22834d91901b0154caf09597b776f16744c1a5"
+              }
+            }
+          }
+        },
+        "b98561b595e0": {
+          "text": "A probe gives up after 5 seconds by default.",
+          "line": 17,
+          "specs": [
+            "internal/probe/probe.go:49-52"
+          ],
+          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "files": {
+            "internal/probe/probe.go": {
+              "path": "internal/probe/probe.go",
+              "blob": "2e320319118997c5cf6dc42c4d894082aeaf242e",
+              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "range": {
+                "start": 49,
+                "end": 52,
+                "hash": "cb1e2eec1003e88acbdb8bf9e20ac00f1afa2fc7"
+              }
+            }
+          }
+        },
+        "3a13c05a066c": {
+          "text": "A certificate with fewer than 14 days left is flagged as expiring soon.",
+          "line": 18,
+          "specs": [
+            "internal/check/check.go:39-42",
+            "internal/check/check.go:458"
+          ],
+          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "files": {
+            "internal/check/check.go": {
+              "path": "internal/check/check.go",
+              "blob": "d6bcc828bc2a6cb8b06ab52930c9550c3f934f9d",
+              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "range": {
+                "start": 39,
+                "end": 42,
+                "hash": "d9a629b290f23e9f22328d94af7e0ca062d9c6c1"
+              }
+            },
+            "internal/check/check.go:458-458": {
+              "path": "internal/check/check.go",
+              "blob": "d6bcc828bc2a6cb8b06ab52930c9550c3f934f9d",
+              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "range": {
+                "start": 458,
+                "end": 458,
+                "hash": "cf245e0c2734ff1146e3819e50321507da2539cb"
+              }
+            }
+          }
+        },
+        "4ced913608ad": {
+          "text": "A registry field it does not know is an error with a line number and a closest-match hint.",
+          "line": 19,
+          "specs": [
+            "internal/registry/registry.go:107-113"
+          ],
+          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "files": {
+            "internal/registry/registry.go": {
+              "path": "internal/registry/registry.go",
+              "blob": "55e1a9c4fb7ea16c09fdcc90434ea849a1b942dd",
+              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "range": {
+                "start": 107,
+                "end": 113,
+                "hash": "33a8d4ee15cebc82ecb3b359288a14b8332a68a2"
+              }
+            }
+          }
+        },
+        "2056b3c9b8b2": {
+          "text": "A service with none of `host`, `port` or `url` is rejected.",
+          "line": 20,
+          "specs": [
+            "internal/registry/registry.go:147-149"
+          ],
+          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "files": {
+            "internal/registry/registry.go": {
+              "path": "internal/registry/registry.go",
+              "blob": "55e1a9c4fb7ea16c09fdcc90434ea849a1b942dd",
+              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "range": {
+                "start": 147,
+                "end": 149,
+                "hash": "40fa24fb9163cc3149bf292d32fe190bb9cb2c83"
+              }
+            }
+          }
+        },
+        "607d46d19824": {
+          "text": "`init` refuses to overwrite an existing file unless `--force` is given.",
+          "line": 21,
+          "specs": [
+            "internal/cli/cli.go:214-216"
+          ],
+          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "files": {
+            "internal/cli/cli.go": {
+              "path": "internal/cli/cli.go",
+              "blob": "e0208025b0a1888995938e0956edd8ee97f369a9",
+              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "range": {
+                "start": 214,
+                "end": 216,
+                "hash": "cf875eea8de2e924c9ef8a4390e4338dcf729cf5"
+              }
+            }
+          }
+        },
+        "813240eb6793": {
+          "text": "A non-empty `NO_COLOR` turns colour off, and `--no-color` wins over everything else.",
+          "line": 22,
+          "specs": [
+            "internal/report/style.go:14-20"
+          ],
+          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "files": {
+            "internal/report/style.go": {
+              "path": "internal/report/style.go",
+              "blob": "2748607c51b2ecb023868459abcb33124800a839",
+              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "range": {
+                "start": 14,
+                "end": 20,
+                "hash": "38e550addce74eb22774b2e71a5c2a826b397a78"
+              }
+            }
+          }
+        },
+        "076609302a68": {
+          "text": "A source that is missing or unreadable is recorded in the report and skipped, and never stops the run.",
+          "line": 23,
+          "specs": [
+            "internal/discover/types.go:104-128"
+          ],
+          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "files": {
+            "internal/discover/types.go": {
+              "path": "internal/discover/types.go",
+              "blob": "0c995bbd32550975c1b7e6822a670ef36b88e19e",
+              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "range": {
+                "start": 104,
+                "end": 128,
+                "hash": "5ab21f419928590a29602e3759f9a1a84a58b73c"
+              }
+            }
+          }
+        },
+        "bf178882a211": {
+          "text": "Builds are static with `CGO_ENABLED=0`, and CI builds one on every run.",
+          "line": 27,
+          "specs": [
+            "Makefile:4",
+            ".github/workflows/ci.yml:30"
+          ],
+          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "files": {
+            "Makefile": {
+              "path": "Makefile",
+              "blob": "4795e37e85bced88b3c47757aae455fb45c2a444",
+              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "range": {
+                "start": 4,
+                "end": 4,
+                "hash": "0ce4182587360c76ce244d0a2c5f0a500748f28d"
+              }
+            },
+            ".github/workflows/ci.yml": {
+              "path": ".github/workflows/ci.yml",
+              "blob": "c96d1046f855e526e8df4cf49ed2999261240b5a",
+              "commit": "ae5e0e5eab85590d36556f37926844d4e538b250",
+              "range": {
+                "start": 30,
+                "end": 30,
+                "hash": "c86cd2539864d54ea0b567ea500bcc4105f881a5"
+              }
+            }
+          }
+        },
+        "870e001d30a1": {
+          "text": "Releases are built for linux amd64, linux arm64 and darwin arm64.",
+          "line": 31,
+          "specs": [
+            ".goreleaser.yml:15-19"
+          ],
+          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "files": {
+            ".goreleaser.yml": {
+              "path": ".goreleaser.yml",
+              "blob": "e2c6edec99df2ed3876222e94f048e2edc395909",
+              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "range": {
+                "start": 15,
+                "end": 19,
+                "hash": "c968d0aee1fc5ec4f9237d4bedb7987e7ffed634"
+              }
+            }
+          }
+        },
+        "a729c3ec3e68": {
+          "text": "The GitHub Action skips the live sources `proc`, `docker` and `systemd` by default.",
+          "line": 32,
+          "specs": [
+            "action.yml:33-36"
+          ],
+          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "files": {
+            "action.yml": {
+              "path": "action.yml",
+              "blob": "c3901feadd4fadf70bfb05968d2186aeed504f37",
+              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "range": {
+                "start": 33,
+                "end": 36,
+                "hash": "a4956954db89331d9a1a26d09543ad00acf811c7"
+              }
+            }
+          }
+        },
+        "848fd20e7f51": {
+          "text": "CI runs `go vet` and `go test -race` on every pull request and once a week.",
+          "line": 33,
+          "specs": [
+            ".github/workflows/ci.yml:9-10",
+            ".github/workflows/ci.yml:26-28"
+          ],
+          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "files": {
+            ".github/workflows/ci.yml": {
+              "path": ".github/workflows/ci.yml",
+              "blob": "c96d1046f855e526e8df4cf49ed2999261240b5a",
+              "commit": "ae5e0e5eab85590d36556f37926844d4e538b250",
+              "range": {
+                "start": 9,
+                "end": 10,
+                "hash": "efa44788df60d80e0cdfdc8cd387ade5e298f757"
+              }
+            },
+            ".github/workflows/ci.yml:26-28": {
+              "path": ".github/workflows/ci.yml",
+              "blob": "c96d1046f855e526e8df4cf49ed2999261240b5a",
+              "commit": "ae5e0e5eab85590d36556f37926844d4e538b250",
+              "range": {
+                "start": 26,
+                "end": 28,
+                "hash": "1a44e5fc37053310af7e0fb46c4d55e612085ed3"
+              }
+            }
+          }
+        }
+      },
+      "pinnedAt": "2026-11-02T13:34:56.733Z",
+      "head": "a401653f39e5661b59958457268227c3c9488628"
+    }
+  }
+}

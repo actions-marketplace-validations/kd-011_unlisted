@@ -1,0 +1,55 @@
+# Turns on auto-merge for Dependabot PRs that qualify (see
+# .github/scripts/automerge-eligible.mjs). GitHub then merges only after the
+# required checks in the ruleset on main pass. Without a required check, --auto
+# merges at once, so do not remove the ruleset.
+#
+# Uses pull_request, never pull_request_target, so nothing here runs with a PR's
+# code and secrets together. Nothing from the PR (title, branch, body) is placed
+# in a shell line: values come in through env.
+name: dependabot automerge
+
+on:
+  pull_request:
+
+permissions: {}
+
+jobs:
+  automerge:
+    if: >-
+      github.event.pull_request.user.login == 'dependabot[bot]' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Read Dependabot metadata
+        id: meta
+        uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3.1.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      # The gate script lives on the base branch; PR code is never executed.
+      - name: Check out the base branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          persist-credentials: false
+
+      - name: Decide
+        id: gate
+        env:
+          DEPS: ${{ steps.meta.outputs.updated-dependencies-json }}
+        run: |
+          if node .github/scripts/automerge-eligible.mjs; then
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Enable auto-merge
+        if: steps.gate.outputs.ok == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: gh pr merge --auto --squash "$PR_URL"

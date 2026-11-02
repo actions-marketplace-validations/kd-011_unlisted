@@ -1,5 +1,7 @@
 # unlisted
 
+[![ci](https://github.com/kd-011/unlisted/actions/workflows/ci.yml/badge.svg)](https://github.com/kd-011/unlisted/actions/workflows/ci.yml)
+
 Compares the services you say you run with what your machine actually exposes, across your tunnel, reverse proxy, Docker and listening sockets, and reports the gaps.
 
 ![unlisted check against the demo homelab](docs/demo.png)

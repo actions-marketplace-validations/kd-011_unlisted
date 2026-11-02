@@ -40,6 +40,10 @@ UPDATE_GOLDEN=1 go test ./internal/cli -run Demo
 make screenshot   # regenerates docs/demo.png (needs Python and Pillow)
 ```
 
+## Dependency updates
+
+Dependabot proposes Go module and GitHub Actions updates once a week. Patch and minor updates, and actions from the `actions/` organisation, merge on their own after CI passes. Other major versions wait for a person. The weekly upkeep workflow checks the links in the docs and the claims in `dossiers/unlisted.md`, and opens one issue when something no longer matches. After fixing a drifted claim, run `dossier-scribe pin` and commit the dossier and its lock.
+
 ## Style
 
 Plain comments that say why, not what. No emoji, and no em dashes in code, comments or docs. Keep commits small.

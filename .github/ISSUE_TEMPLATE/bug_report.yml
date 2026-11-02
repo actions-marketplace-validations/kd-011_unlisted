@@ -1,0 +1,31 @@
+name: Bug report
+description: A finding that is wrong, missing, or a config that was misread
+labels: [bug]
+body:
+  - type: textarea
+    id: config
+    attributes:
+      label: The config that was misread
+      description: A few sanitised lines of Caddyfile, nginx or tunnel config, with hostnames swapped for example.com.
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: The command you ran and its full output.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Output of `unlisted version`, and your OS.
+    validations:
+      required: true
