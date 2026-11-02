@@ -7,7 +7,7 @@ last_verified: 2026-11-02
 tags: [cli, go, homelab]
 ---
 
-A read-only command line tool that compares the services you say you run with what your machine exposes. These claims are the README's main promises, each tied to the code that keeps it.
+A read-only command line tool that compares the services you say you run with what your machine exposes. The claims below are the README's main promises, each tied to the code that keeps it.
 
 ## Features
 

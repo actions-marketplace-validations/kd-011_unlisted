@@ -4,7 +4,7 @@ Bug reports and small pull requests are welcome.
 
 ## Reporting a bug
 
-The most useful report is a sanitised snippet of the config that was misread (a few lines of Caddyfile, nginx or tunnel config with hostnames swapped for `example.com`), the output you got and the output you expected.
+The most useful report has a sanitised snippet of the config that was misread (a few lines of Caddyfile, nginx or tunnel config, with hostnames swapped for `example.com`), the output you got and the output you expected.
 
 ## Working on the code
 
@@ -14,7 +14,7 @@ make build     # static binary at ./unlisted
 make demo      # run against the fake homelab in demo/
 ```
 
-Go 1.22. The standard library first; the only dependency is `gopkg.in/yaml.v3`, and a new one needs a reason.
+Go 1.22. Use the standard library first. The only dependency is `gopkg.in/yaml.v3`, and a new one needs a reason.
 
 Tests never touch the real machine. They read fixtures under `testdata/` and `demo/` through `--config-root`. Do not add a test that reads `/etc` or `/proc`.
 
@@ -42,8 +42,10 @@ make screenshot   # regenerates docs/demo.png (needs Python and Pillow)
 
 ## Dependency updates
 
-Dependabot proposes Go module and GitHub Actions updates once a week. Patch and minor updates, and actions from the `actions/` organisation, merge on their own after CI passes. Other major versions wait for a person. The weekly upkeep workflow checks the links in the docs and the claims in `dossiers/unlisted.md`, and opens one issue when something no longer matches. After fixing a drifted claim, run `dossier-scribe pin` and commit the dossier and its lock.
+Dependabot proposes Go module and GitHub Actions updates once a week. Patch and minor updates, and actions from the `actions/` organisation, merge on their own after CI passes. Other major versions wait for a person.
+
+The weekly upkeep workflow checks the links in the docs and the claims in `dossiers/unlisted.md`. It opens an issue when something no longer matches. After fixing a drifted claim, run `dossier-scribe pin` and commit the dossier and its lock.
 
 ## Style
 
-Plain comments that say why, not what. No emoji, and no em dashes in code, comments or docs. Keep commits small.
+Comments say why the code does something. No emoji, and no em dashes in code, comments or docs. Keep commits small.

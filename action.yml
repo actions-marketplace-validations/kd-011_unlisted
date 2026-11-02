@@ -1,5 +1,5 @@
 name: unlisted
-description: Diff the services in your registry against what your configs actually expose, and fail on the gaps.
+description: Compare the services in your registry with what your configs expose, and fail on the gaps.
 author: unlisted contributors
 branding:
   icon: eye-off

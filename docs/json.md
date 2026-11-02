@@ -1,6 +1,6 @@
 # JSON output
 
-`unlisted check --json` (or `--format json`) writes one JSON document to stdout. The schema is versioned in the `schema` field. It changes only when a field is removed or changes meaning; new optional fields can appear at any time, so consumers should ignore keys they do not know.
+`unlisted check --json` (or `--format json`) writes one JSON document to stdout. The `schema` field holds the schema version. It changes only when a field is removed or changes meaning. New optional fields can appear at any time, so ignore keys you do not know.
 
 Output is deterministic for a given machine state: no timestamps, stable ordering.
 

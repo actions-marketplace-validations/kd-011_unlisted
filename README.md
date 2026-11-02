@@ -2,15 +2,15 @@
 
 [![ci](https://github.com/kd-011/unlisted/actions/workflows/ci.yml/badge.svg)](https://github.com/kd-011/unlisted/actions/workflows/ci.yml)
 
-Compares the services you say you run with what your machine actually exposes, across your tunnel, reverse proxy, Docker and listening sockets, and reports the gaps.
+Compares the services you say you run with what your machine exposes (tunnel, reverse proxy, Docker, listening sockets) and reports the gaps.
 
 ![unlisted check against the demo homelab](docs/demo.png)
 
-*The output above is real: `unlisted check -f demo/registry.yml --config-root demo`. Plain text version in [docs/demo.txt](docs/demo.txt).*
+*That output is real: `unlisted check -f demo/registry.yml --config-root demo`. There is a plain text copy in [docs/demo.txt](docs/demo.txt).*
 
-Homelabs rot in two directions. Things get exposed once and forgotten (the test wiki, the dev dashboard, the Redis you published to debug something). And things get written down once and then die quietly (the registry still lists a service that moved months ago). Dashboards show you what you told them. Port killers show you what is listening. `unlisted` reads one small YAML file of what you claim to run and tells you where reality disagrees.
+Homelabs drift two ways. Something gets exposed once and forgotten: the test wiki, the dev dashboard, the Redis you published to debug something. Or something gets written down and then dies: the registry still lists a service that moved months ago. Dashboards show what you told them and port tools show what is listening. `unlisted` reads one small YAML file of what you say you run and tells you where the machine disagrees.
 
-It is one static Go binary, read-only, and makes no network calls unless you pass `--probe`.
+It is one static Go binary. It is read-only and makes no network calls unless you pass `--probe`.
 
 ## Quickstart
 
@@ -21,15 +21,15 @@ unlisted init          # scan this machine, write registry.yml with everything i
 unlisted check         # diff the registry against the machine
 ```
 
-`init` is the "adopt your mess" path: it records what is exposed right now, so the first `check` is clean and every change after that shows up as a finding. Open the file afterwards and fix the names and the `auth:` lines, which `init` can only guess at.
+`init` records what is exposed right now, so the first `check` is clean and every change after that shows up as a finding. Open the file afterwards and fix the names and the `auth:` lines, which `init` can only guess at.
 
-To see the output without pointing it at your own box, run the demo. It uses a fake homelab under `demo/` and needs no access to your machine:
+To see the output without pointing it at your own box, run the demo. It reads a fake homelab under `demo/`:
 
 ```sh
 unlisted check -f demo/registry.yml --config-root demo
 ```
 
-Run as root (or with access to the Docker socket) for the fullest picture. Without it, `unlisted` still runs and says which sources it could not read.
+Run as root, or with access to the Docker socket, to see everything. Without that it still runs and says which sources it could not read.
 
 ## What it finds
 
@@ -41,9 +41,9 @@ Run as root (or with access to the Docker socket) for the fullest picture. Witho
 | `DRIFT` | The registry port differs from the origin port the tunnel or proxy actually uses. | medium |
 | `CERT` | `--probe` only. TLS certificate expired, expiring within 14 days, or not verifying. | high, medium, low |
 
-`NOAUTH` says "no auth detected", never "insecure". `unlisted` can see a Caddy `forward_auth` or an nginx `auth_basic`, but it cannot see a login screen inside the application. Declare it (`auth: app`) and the finding goes away; declare `auth: none` to say the exposure is deliberate.
+`NOAUTH` means no auth was detected. `unlisted` can see a Caddy `forward_auth` or an nginx `auth_basic`, but it cannot see a login screen inside the application. Declare it with `auth: app` and the finding goes away. Declare `auth: none` to mark the exposure as deliberate.
 
-Every finding carries a severity, the service, what was found, where (file and line when known) and a one-line fix.
+Each finding has a severity, the service, what was found, where it was found (file and line when known) and a one-line fix.
 
 ## Registry
 
@@ -85,7 +85,7 @@ Unknown fields are an error with a line number and a "did you mean" hint, so typ
 
 ## Discovery sources
 
-Each source is a small reader. A source that is missing or unreadable is reported on the sources line at the top of the output and skipped. It never stops the run.
+Each source is a small reader. If one is missing or unreadable, the sources line at the top of the output says so and the run carries on without it.
 
 | Source | Reads | Gives |
 | --- | --- | --- |
@@ -96,7 +96,7 @@ Each source is a small reader. A source that is missing or unreadable is reporte
 | listening sockets | `/proc/net/tcp`, `/proc/net/tcp6`, `/proc/*/fd` | listening TCP ports and, where permitted, the owning process |
 | systemd | `systemctl list-units --type=service --state=running` | the unit name for a listening process; skipped silently if unavailable |
 
-Where a tunnel points at a reverse proxy that points at an app, `unlisted` merges them: the hostname is one site, and the proxy's backend is the origin it compares with the registry.
+When a tunnel points at a reverse proxy that points at an app, `unlisted` treats the hostname as one site and compares the proxy's backend with the registry.
 
 Override any path:
 
@@ -106,7 +106,7 @@ Override any path:
 --config-root DIR                        resolve every default path under DIR (also UNLISTED_ROOT)
 ```
 
-`--config-root` is how the demo and the tests run: it points every source at a fixture tree instead of the real machine (`DIR/etc/caddy/Caddyfile`, `DIR/proc/net/tcp`, `DIR/docker/containers.json`, and so on).
+The demo and the tests run with `--config-root`. It points every source at a fixture tree instead of the real machine (`DIR/etc/caddy/Caddyfile`, `DIR/proc/net/tcp`, `DIR/docker/containers.json`, and so on).
 
 ## Usage
 
@@ -132,11 +132,11 @@ Exit codes: `0` clean, `1` findings matching `--fail-on`, `2` error (bad flags, 
 
 ### Probing
 
-`--probe` is the only thing that touches the network, and it only contacts hostnames listed in the registry. Besides status and certificate expiry it looks for signs of auth in front of the host (a Cloudflare Access redirect, a `401` with `WWW-Authenticate`, a redirect to a login page), and if it finds one it drops the `NOAUTH` finding for that host. A `502`, `503` or `504`, or a connection that fails, counts as `DEAD`.
+`--probe` is the only thing that touches the network, and it only contacts hostnames in the registry. It also looks for auth in front of each host (a Cloudflare Access redirect, a `401` with `WWW-Authenticate`, a redirect to a login page) and drops the `NOAUTH` finding for that host if it sees one. A `502`, `503` or `504`, or a failed connection, counts as `DEAD`.
 
 ## GitHub Action
 
-Check a registry that lives in a repo, for example a GitOps homelab that keeps its Caddyfile, tunnel config and registry together:
+To check a registry that lives in a repo, for example a GitOps homelab that keeps its Caddyfile, tunnel config and registry together:
 
 ```yaml
 name: unlisted
@@ -155,18 +155,18 @@ jobs:
           fail-on: unregistered,dead,drift
 ```
 
-The runner is not your server, so the action skips the live sources (`proc`, `docker`, `systemd`) by default and compares the registry with the config files you point it at. Inputs: `registry`, `version`, `fail-on`, `format`, `cloudflared`, `caddyfile`, `nginx-dir`, `config-root`, `skip`.
+The runner is not your server, so the action skips the live sources (`proc`, `docker`, `systemd`) by default and compares the registry with the config files you point it at. The inputs are `registry`, `version`, `fail-on`, `format`, `cloudflared`, `caddyfile`, `nginx-dir`, `config-root`, `skip`.
 
 ## Limitations
 
-- Linux first. Listening sockets come from `/proc`, so macOS and Windows get the config-file sources and Docker, but not sockets.
-- No app-level auth detection. `NOAUTH` means no auth was found in the proxy or tunnel config (or, with `--probe`, in the response). It cannot see a login page inside an app. Declare `auth:` to say what you know.
+- Linux first. Listening sockets come from `/proc`, so macOS and Windows get the config-file sources and Docker but no sockets.
+- No app-level auth detection. `NOAUTH` means no auth was found in the proxy or tunnel config or, with `--probe`, in the response. It cannot see a login page inside an app, so declare `auth:` for what you know.
 - A tunnel's Cloudflare Access policies live in the Cloudflare dashboard, not in the config file, so they are invisible unless you declare them or probe.
-- The parsers for Caddy and nginx are tolerant readers, not the real thing. Dynamic config, `include` outside the usual directories and generated configs are not followed.
-- A port bound beyond loopback is "listening on all interfaces", not "exposed to the internet". Your router and firewall decide that, and `unlisted` cannot see them.
+- The Caddy and nginx parsers are tolerant readers and do not match the real servers. They do not follow dynamic config, `include` outside the usual directories or generated configs.
+- A port bound beyond loopback is listening on all interfaces. Whether it is exposed to the internet depends on your router and firewall, which `unlisted` cannot see.
 - Without root, other users' processes are not attributable, and the report says how many owners were hidden.
-- Read-only. It never edits a config, restarts anything or fixes anything, and it writes a file only for `unlisted init`.
-- No network unless `--probe`.
+- Read-only. It never edits a config, restarts anything or fixes anything, and only `unlisted init` writes a file.
+- No network unless you pass `--probe`.
 
 ## Roadmap
 
@@ -188,7 +188,7 @@ Releases are built with GoReleaser (`.goreleaser.yml`) into the same three targe
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). The short version: a new discovery source is one file implementing a two-method interface plus a fixture and a test, and bug reports with a sanitised config snippet are the most useful thing you can send.
+See [CONTRIBUTING.md](CONTRIBUTING.md). A new discovery source is one file implementing a two-method interface, plus a fixture and a test. The most useful bug report includes a sanitised config snippet.
 
 ## License
 
