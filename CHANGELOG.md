@@ -4,6 +4,8 @@ All notable changes are listed here, newest first. The format follows [Keep a Ch
 
 ## Unreleased
 
+## 0.1.1 - 2026-11-03
+
 ### Added
 
 - Weekly Dependabot updates for Go modules and GitHub Actions, grouped by minor and patch with a seven-day cooldown. Updates that qualify merge on their own once CI is green.
