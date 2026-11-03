@@ -1,0 +1,8 @@
+[
+ {"Id":"8dfafdbc3a40","Names":["/web"],"Image":"nginx:latest","State":"running","Ports":[{"IP":"0.0.0.0","PrivatePort":80,"PublicPort":8000,"Type":"tcp"},{"IP":"::","PrivatePort":80,"PublicPort":8000,"Type":"tcp"}],"HostConfig":{"NetworkMode":"default"}},
+ {"Id":"9dfafdbc3a41","Names":["/redis"],"Image":"redis","State":"running","Ports":[{"IP":"0.0.0.0","PrivatePort":6379,"PublicPort":6379,"Type":"tcp"}]},
+ {"Id":"adfafdbc3a42","Names":["/dns"],"Image":"pihole","State":"running","Ports":[{"IP":"0.0.0.0","PrivatePort":53,"PublicPort":53,"Type":"udp"},{"IP":"0.0.0.0","PrivatePort":53,"PublicPort":53,"Type":"tcp"}]},
+ {"Id":"bdfafdbc3a43","Names":["/internal"],"Image":"x","State":"running","Ports":[{"PrivatePort":8080,"Type":"tcp"}]},
+ {"Id":"cdfafdbc3a44","Names":["/local"],"Image":"x","State":"running","Ports":[{"IP":"127.0.0.1","PrivatePort":80,"PublicPort":8088,"Type":"tcp"},{"IP":"::1","PrivatePort":80,"PublicPort":8088,"Type":"tcp"}]},
+ {"Id":"ddfafdbc3a45","Names":["/stopped"],"Image":"x","State":"exited","Ports":[]}
+]

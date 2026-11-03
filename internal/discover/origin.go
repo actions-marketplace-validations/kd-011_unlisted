@@ -23,6 +23,9 @@ func (o Origin) Addr() string {
 	if o.Scheme == "unix" {
 		return "unix:" + o.Host
 	}
+	if o.Scheme == "bastion" {
+		return "bastion"
+	}
 	h := o.Host
 	if h == "" {
 		h = "localhost"
@@ -46,6 +49,14 @@ func ParseOrigin(raw string) Origin {
 	case strings.HasPrefix(raw, "unix:"):
 		o.Scheme, o.Host, o.Local = "unix", strings.TrimPrefix(strings.TrimPrefix(raw, "unix:"), "//"), true
 		return o
+	case strings.HasPrefix(raw, "unix//"):
+		// Caddy spells a socket unix//run/app.sock.
+		o.Scheme, o.Host, o.Local = "unix", strings.TrimPrefix(raw, "unix/"), true
+		return o
+	case raw == "bastion":
+		// cloudflared's built-in jump host: no port, nothing to check.
+		o.Scheme = "bastion"
+		return o
 	case strings.HasPrefix(raw, "http_status:"), raw == "hello_world", raw == "hello-world":
 		o.Scheme = "http_status"
 		return o
@@ -54,6 +65,15 @@ func ParseOrigin(raw string) Origin {
 	rest := raw
 	if i := strings.Index(rest, "://"); i >= 0 {
 		o.Scheme, rest = strings.ToLower(rest[:i]), rest[i+3:]
+	}
+	if strings.HasPrefix(rest, "unix:") {
+		// nginx: http://unix:/tmp/backend.socket:/uri/ (the socket, then a URI).
+		sock := strings.TrimPrefix(rest, "unix:")
+		if i := strings.Index(sock, ":"); i >= 0 {
+			sock = sock[:i]
+		}
+		o.Scheme, o.Host, o.Local = "unix", sock, true
+		return o
 	}
 	if i := strings.IndexAny(rest, "/?"); i >= 0 {
 		rest = rest[:i]

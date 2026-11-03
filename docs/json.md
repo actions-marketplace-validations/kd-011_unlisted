@@ -2,6 +2,8 @@
 
 `unlisted check --json` (or `--format json`) writes one JSON document to stdout. The `schema` field holds the schema version. It changes only when a field is removed or changes meaning. New optional fields can appear at any time, so ignore keys you do not know.
 
+When there is no registry file the `registry` field is empty, `services` is 0 and the first entry in `notes` says so.
+
 Output is deterministic for a given machine state: no timestamps, stable ordering.
 
 ```json

@@ -19,15 +19,25 @@ func Text(w io.Writer, r check.Report, st Style) {
 
 	p("")
 	p("  %s  %s", st.BoldColor(255, "unlisted"),
-		st.Grey(fmt.Sprintf("%s · %d %s declared", r.Registry, r.Services, plural(r.Services, "service", "services"))))
+		st.Grey(declared(r)))
 	p("")
 	sourcesLine(w, r, st)
 	p("")
+	if r.NoRegistry {
+		first, rest, _ := strings.Cut(check.NoRegistryNote, ". ")
+		p("  %s", st.Bold(first+"."))
+		p("    %s", st.Grey(rest))
+		p("")
+	}
 
 	counts := r.Counts()
 	if len(r.Findings) == 0 {
 		p("  %s %s", st.BoldColor(114, "✓"), st.Bold("Nothing unlisted."))
-		p("    %s", st.Grey("Everything exposed is in the registry, and everything in the registry is being served."))
+		if r.NoRegistry {
+			p("    %s", st.Grey("No registry, and nothing exposed that unlisted could see."))
+		} else {
+			p("    %s", st.Grey("Everything exposed is in the registry, and everything in the registry is being served."))
+		}
 		p("")
 		if r.ProbeRan {
 			probeBlock(w, r, st)
@@ -270,4 +280,11 @@ func IsTTY(f *os.File) bool {
 		return false
 	}
 	return fi.Mode()&os.ModeCharDevice != 0
+}
+
+func declared(r check.Report) string {
+	if r.NoRegistry {
+		return "no registry"
+	}
+	return fmt.Sprintf("%s · %d %s declared", r.Registry, r.Services, plural(r.Services, "service", "services"))
 }

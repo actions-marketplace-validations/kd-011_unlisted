@@ -22,6 +22,9 @@ type Input struct {
 	CertWarnDays int
 }
 
+// NoRegistryNote is shown when there was no registry file to compare against.
+const NoRegistryNote = "No registry.yml here, so this lists everything the machine exposes. Run unlisted init to write a registry from it, then edit the names and auth lines."
+
 // Report is the result of a check.
 type Report struct {
 	Registry string
@@ -33,6 +36,9 @@ type Report struct {
 	// Notes are things that could not be checked, said plainly so a clean
 	// report is never mistaken for a complete one.
 	Notes []string
+	// NoRegistry is set when no registry file existed: every finding is then
+	// "unregistered" and the report is a list of what the machine exposes.
+	NoRegistry bool
 }
 
 // Run reconciles the registry against the snapshot.
@@ -53,6 +59,7 @@ func Run(in Input) Report {
 	c.registered()
 	c.unregisteredPorts()
 	c.certs()
+	c.dashboardTunnel()
 	sortFindings(r.Findings)
 	return r
 }
@@ -440,6 +447,22 @@ func (c *checker) sourceHasSites(name string) bool {
 		}
 	}
 	return false
+}
+
+// A tunnel created in the Cloudflare dashboard keeps its routes there, not in a
+// file, so cloudflared can run here while the cloudflared source finds nothing.
+// Hostnames behind it are invisible, and a registry entry for one can read as DEAD.
+func (c *checker) dashboardTunnel() {
+	if c.sourceHasSites("cloudflared") {
+		return
+	}
+	for _, l := range c.in.Snap.Listeners {
+		if l.Process == "cloudflared" {
+			c.rep.Notes = append(c.rep.Notes,
+				"cloudflared is running but no config file with routes was found. Tunnels managed in the Cloudflare dashboard keep their hostnames there, so unlisted cannot see them and may report their registry entries as DEAD. Add ignore: true to those entries, or point --cloudflared at a config file")
+			return
+		}
+	}
 }
 
 func (c *checker) certs() {

@@ -121,11 +121,12 @@ func TestEveryWorkflowDeclaresPermissions(t *testing.T) {
 }
 
 // The release workflow keeps its behaviour: goreleaser on a v* tag. The action
-// is now pinned by SHA at the same major version.
+// is pinned by SHA. Any major version will do, so a Dependabot bump of the
+// action does not fail this test.
 func TestReleaseWorkflowUnchanged(t *testing.T) {
 	y := read(t, ".github/workflows/release.yml")
 	mustMatch(t, `tags: \["v\*"\]`, y)
-	mustMatch(t, `goreleaser/goreleaser-action@[0-9a-f]{40} # v6`, y)
+	mustMatch(t, `goreleaser/goreleaser-action@[0-9a-f]{40} # v[0-9.]+`, y)
 	mustMatch(t, `args: release --clean`, y)
 }
 

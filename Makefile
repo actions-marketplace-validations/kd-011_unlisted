@@ -23,11 +23,14 @@ dist:
 	cd dist && sha256sum unlisted_* > checksums.txt
 
 demo: build
-	./unlisted check -f demo/registry.yml --config-root demo
+	./unlisted demo
 
+# docs/demo.png is the full report, docs/demo-hero.png the first 30 lines of it.
 screenshot: build
-	CLICOLOR_FORCE=1 ./unlisted check -f demo/registry.yml --config-root demo \
-	  | python3 scripts/render-demo.py "unlisted check -f registry.yml" docs/demo.png
+	CLICOLOR_FORCE=1 ./unlisted demo \
+	  | python3 scripts/render-demo.py "unlisted demo" docs/demo.png
+	CLICOLOR_FORCE=1 ./unlisted demo | head -n 30 \
+	  | python3 scripts/render-demo.py "unlisted demo" docs/demo-hero.png
 
 clean:
 	rm -rf unlisted dist

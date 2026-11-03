@@ -13,7 +13,11 @@ func Markdown(w io.Writer, r check.Report) {
 	p := func(format string, a ...any) { fmt.Fprintf(w, format+"\n", a...) }
 	p("## unlisted report")
 	p("")
-	p("Registry `%s`, %d %s declared.", r.Registry, r.Services, plural(r.Services, "service", "services"))
+	if r.NoRegistry {
+		p("%s", check.NoRegistryNote)
+	} else {
+		p("Registry `%s`, %d %s declared.", r.Registry, r.Services, plural(r.Services, "service", "services"))
+	}
 	p("")
 	if len(r.Findings) == 0 {
 		p("Nothing unlisted. Everything exposed is in the registry, and everything in the registry is being served.")

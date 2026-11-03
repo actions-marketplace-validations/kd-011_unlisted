@@ -33,5 +33,11 @@ jobs:
           set +e
           ./unlisted check -f demo/registry.yml --config-root demo --no-color
           test $? -eq 1
+      - name: demo runs without a checkout
+        run: |
+          cd "$(mktemp -d)"
+          "$GITHUB_WORKSPACE/unlisted" demo --no-color | grep -q UNREGISTERED
+      - name: install script is valid shell
+        run: shellcheck install.sh
       - name: cross-compile
         run: make dist

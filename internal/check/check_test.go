@@ -387,3 +387,33 @@ func TestParseTypes(t *testing.T) {
 		t.Errorf("bad type: %v", err)
 	}
 }
+
+// A tunnel managed from the Cloudflare dashboard keeps no config file on the
+// machine, so its hostnames are invisible. Say so when cloudflared is running.
+func TestDashboardManagedTunnelNote(t *testing.T) {
+	sn := discover.Snapshot{
+		Listeners: []discover.Listener{listen(20241, "127.0.0.1", "cloudflared")},
+		Sources:   []discover.Status{{Name: "cloudflared", State: "absent"}, src("proc", 1)},
+	}
+	r := Run(Input{Registry: reg(), Snap: sn})
+	found := false
+	for _, n := range r.Notes {
+		if strings.Contains(n, "cloudflared is running") && strings.Contains(n, "dashboard") {
+			found = true
+		}
+	}
+	if !found {
+		t.Errorf("want a dashboard-managed tunnel note, got %q", r.Notes)
+	}
+
+	// With a readable config, or no cloudflared process, there is nothing to say.
+	sn.Sources[0] = src("cloudflared", 2)
+	if r := Run(Input{Registry: reg(), Snap: sn}); len(r.Notes) != 0 {
+		t.Errorf("unexpected notes with a config: %q", r.Notes)
+	}
+	sn.Sources[0] = discover.Status{Name: "cloudflared", State: "absent"}
+	sn.Listeners = nil
+	if r := Run(Input{Registry: reg(), Snap: sn}); len(r.Notes) != 0 {
+		t.Errorf("unexpected notes without a process: %q", r.Notes)
+	}
+}

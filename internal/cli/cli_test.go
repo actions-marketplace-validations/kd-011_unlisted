@@ -341,3 +341,120 @@ func TestProbeWithNoHostsTouchesNothing(t *testing.T) {
 		t.Errorf("probes should be present and empty:\n%s", out)
 	}
 }
+
+// chdir moves into dir for the test (testing.T.Chdir needs a newer Go than go.mod).
+func chdir(t *testing.T, dir string) {
+	t.Helper()
+	old, _ := os.Getwd()
+	if err := os.Chdir(dir); err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { os.Chdir(old) })
+}
+
+// A stranger who ran go install has no checkout, so the demo has to be inside
+// the binary.
+func TestDemoCommandNeedsNoFiles(t *testing.T) {
+	tmp := t.TempDir()
+	t.Setenv("TMPDIR", tmp)
+	chdir(t, t.TempDir())
+	code, out, errOut := run("demo", "--no-color")
+	if code != ExitClean {
+		t.Fatalf("exit %d, stderr: %s", code, errOut)
+	}
+	for _, want := range []string{"UNREGISTERED", "DEAD", "NOAUTH", "DRIFT", "example.com"} {
+		if !strings.Contains(out, want) {
+			t.Errorf("demo output lacks %q:\n%s", want, out)
+		}
+	}
+	if strings.Contains(out, tmp) {
+		t.Errorf("demo output leaks its temp directory:\n%s", out)
+	}
+	if entries, _ := os.ReadDir(tmp); len(entries) != 0 {
+		t.Errorf("demo left %d entries in its temp directory", len(entries))
+	}
+}
+
+// The default registry.yml missing is the first run for everyone. It should
+// show what the machine exposes instead of an error.
+func TestNoRegistryShowsWhatIsExposed(t *testing.T) {
+	inRepo(t)
+	root, _ := filepath.Abs("demo")
+	chdir(t, t.TempDir())
+
+	code, out, errOut := run("check", "--config-root", root, "--no-color")
+	if code != ExitFindings || errOut != "" {
+		t.Fatalf("exit %d, stderr %q", code, errOut)
+	}
+	for _, want := range []string{"No registry.yml", "unlisted init", "UNREGISTERED", "jellyfin.example.com"} {
+		if !strings.Contains(out, want) {
+			t.Errorf("output lacks %q:\n%s", want, out)
+		}
+	}
+
+	_, js, _ := run("check", "--config-root", root, "--json")
+	var got struct {
+		Notes []string `json:"notes"`
+	}
+	if err := json.Unmarshal([]byte(js), &got); err != nil {
+		t.Fatal(err)
+	}
+	if len(got.Notes) == 0 || !strings.Contains(got.Notes[0], "No registry.yml") {
+		t.Errorf("json notes: %q", got.Notes)
+	}
+
+	// Naming a file that is missing is still a mistake worth failing on.
+	if code, _, _ := run("check", "-f", "registry.yml", "--config-root", root); code != ExitError {
+		t.Errorf("explicit -f with a missing file: exit %d, want %d", code, ExitError)
+	}
+}
+
+// Config written the way the Caddy, nginx, cloudflared and Docker docs write
+// it: sockets, built-in services, includes that match nothing, wildcard sites.
+func TestDocumentationShapes(t *testing.T) {
+	inRepo(t)
+	code, js, errOut := run("check", "--config-root", "testdata/docshapes", "--skip", "proc,systemd", "--json")
+	if code != ExitFindings || errOut != "" {
+		t.Fatalf("exit %d, stderr %q", code, errOut)
+	}
+	var got struct {
+		Sources []struct {
+			Name, State string
+			Count       int
+		}
+		Findings []struct{ Host, Message string }
+	}
+	if err := json.Unmarshal([]byte(js), &got); err != nil {
+		t.Fatal(err)
+	}
+	for _, s := range got.Sources {
+		skipped := s.Name == "proc" || s.Name == "systemd"
+		if s.Name == "docker" && s.Count != 6 || !skipped && s.State != "ok" {
+			t.Errorf("source %+v", s)
+		}
+	}
+	msg := map[string]string{}
+	for _, f := range got.Findings {
+		msg[f.Host] = f.Message
+	}
+	want := map[string]string{
+		"app.example.org":     "unix:/tmp/backend.socket",
+		"sock.example.com":    "unix:/run/app.sock",
+		"bastion.example.com": "bastion",
+		"h2.example.com":      "localhost:8081",
+		"ssh.example.com":     "localhost:22",
+		"*.apps.example.com":  "localhost:2368",
+		"old.example.com":     "auth detected (basicauth)",
+		"gitlab.example.com":  "localhost:8080",
+	}
+	for host, frag := range want {
+		if !strings.Contains(msg[host], frag) {
+			t.Errorf("%s: %q lacks %q", host, msg[host], frag)
+		}
+	}
+	for host, m := range msg {
+		if strings.Contains(m, "unix:80") {
+			t.Errorf("%s still reads a socket as a port: %s", host, m)
+		}
+	}
+}

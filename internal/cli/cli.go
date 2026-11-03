@@ -7,10 +7,13 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"io/fs"
 	"os"
+	"path/filepath"
 	"runtime/debug"
 	"strings"
 
+	demofiles "github.com/kd-011/unlisted/demo"
 	"github.com/kd-011/unlisted/internal/adopt"
 	"github.com/kd-011/unlisted/internal/check"
 	"github.com/kd-011/unlisted/internal/discover"
@@ -34,6 +37,7 @@ const usage = `unlisted: diff what you say you run against what is actually expo
 Usage:
   unlisted [check] [flags]    compare the registry with this machine (default)
   unlisted init [flags]       scan this machine and write a starter registry
+  unlisted demo [flags]       run check against a built-in fake homelab
   unlisted version
 
 Check flags:
@@ -72,6 +76,8 @@ func Run(args []string, stdout, stderr io.Writer) int {
 		return runCheck(args, stdout, stderr)
 	case "init":
 		return runInit(args, stdout, stderr)
+	case "demo":
+		return runDemo(args, stdout, stderr)
 	case "version":
 		fmt.Fprintf(stdout, "unlisted %s\n", version())
 		return ExitClean
@@ -121,6 +127,41 @@ func newFlagSet(name string, stderr io.Writer) *flag.FlagSet {
 }
 
 func runCheck(args []string, stdout, stderr io.Writer) int {
+	return checkWith(args, stdout, stderr, "")
+}
+
+// runDemo checks the fake homelab compiled into the binary. It unpacks the
+// fixture tree to a temp directory, because every source reads real paths, and
+// exits 0 even with findings: the findings are the point.
+func runDemo(args []string, stdout, stderr io.Writer) int {
+	dir, err := os.MkdirTemp("", "unlisted-demo-")
+	if err != nil {
+		return fail(stderr, "%v", err)
+	}
+	defer os.RemoveAll(dir)
+	err = fs.WalkDir(demofiles.Files, ".", func(p string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		dst := filepath.Join(dir, filepath.FromSlash(p))
+		if d.IsDir() {
+			return os.MkdirAll(dst, 0o755)
+		}
+		b, err := demofiles.Files.ReadFile(p)
+		if err != nil {
+			return err
+		}
+		return os.WriteFile(dst, b, 0o644)
+	})
+	if err != nil {
+		return fail(stderr, "unpacking the demo: %v", err)
+	}
+	base := []string{"-f", filepath.Join(dir, "registry.yml"), "--config-root", dir, "--fail-on", "none"}
+	return checkWith(append(base, args...), stdout, stderr, "demo/registry.yml")
+}
+
+// checkWith is check. A non-empty label replaces the registry path in output.
+func checkWith(args []string, stdout, stderr io.Writer, label string) int {
 	fs := newFlagSet("check", stderr)
 	var src sourceFlags
 	src.register(fs)
@@ -145,12 +186,24 @@ func runCheck(args []string, stdout, stderr io.Writer) int {
 		return fail(stderr, "--fail-on: %v", err)
 	}
 
+	named := false
+	fs.Visit(func(f *flag.Flag) { named = named || f.Name == "f" })
+
+	noRegistry := false
 	reg, err := registry.Load(*regPath)
 	if err != nil {
-		if errors.Is(err, os.ErrNotExist) {
+		if !errors.Is(err, os.ErrNotExist) {
+			return fail(stderr, "%v", err)
+		}
+		if named {
 			return fail(stderr, "%s not found. Run 'unlisted init' to write a starter registry, or pass -f", *regPath)
 		}
-		return fail(stderr, "%v", err)
+		// First run: no file was asked for and none exists. Report what the
+		// machine exposes instead of an error.
+		reg, noRegistry = &registry.Registry{}, true
+	}
+	if label != "" {
+		reg.Path = label
 	}
 
 	snap := discover.Run(src.env(), discover.AllSources())
@@ -160,6 +213,7 @@ func runCheck(args []string, stdout, stderr io.Writer) int {
 		in.Probes = probe.Hosts(probeHosts(reg), probe.Options{})
 	}
 	rep := check.Run(in)
+	rep.NoRegistry = noRegistry
 
 	exit := ExitClean
 	if rep.Failing(failTypes) > 0 {

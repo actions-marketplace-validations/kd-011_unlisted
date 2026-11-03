@@ -49,6 +49,9 @@ func BuildJSON(r check.Report, version string, failOn map[check.Type]bool, exit 
 	if j.Findings == nil {
 		j.Findings = []check.Finding{}
 	}
+	if r.NoRegistry {
+		j.Notes = append([]string{check.NoRegistryNote}, j.Notes...)
+	}
 	if j.Notes == nil {
 		j.Notes = []string{}
 	}

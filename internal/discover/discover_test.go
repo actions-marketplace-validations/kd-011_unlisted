@@ -41,6 +41,32 @@ func TestParseOrigin(t *testing.T) {
 	}
 }
 
+// Spellings taken from the Caddy, nginx and cloudflared docs for a backend that
+// is a socket or a built-in service, not a TCP port.
+func TestParseOriginSocketsAndBuiltIns(t *testing.T) {
+	cases := []struct {
+		in, scheme, host string
+	}{
+		{"unix//run/app.sock", "unix", "/run/app.sock"},
+		{"http://unix:/tmp/backend.socket:/uri/", "unix", "/tmp/backend.socket"},
+		{"unix:/run/app.sock", "unix", "/run/app.sock"},
+		{"bastion", "bastion", ""},
+		{"h2c://localhost:8081", "h2c", "localhost"},
+	}
+	for _, c := range cases {
+		o := ParseOrigin(c.in)
+		if o.Scheme != c.scheme || o.Host != c.host || o.Port != 0 && c.scheme != "h2c" {
+			t.Errorf("%q -> %+v", c.in, o)
+		}
+		if c.scheme == "unix" && !o.Local {
+			t.Errorf("%q should be local", c.in)
+		}
+	}
+	if o := ParseOrigin("h2c://localhost:8081"); o.Port != 8081 || !o.Local {
+		t.Errorf("h2c -> %+v", o)
+	}
+}
+
 func read(t *testing.T, p string) []byte {
 	t.Helper()
 	b, err := os.ReadFile(filepath.Join("..", "..", "testdata", p))

@@ -1,0 +1,82 @@
+{
+	email you@example.com
+	http_port 8080
+	https_port 8443
+}
+
+(common) {
+	encode zstd gzip
+	header -Server
+}
+
+example.com {
+	root * /var/www
+	encode gzip
+	file_server
+}
+
+www.example.com {
+	redir https://example.com{uri} permanent
+}
+
+api.example.com {
+	import common
+	reverse_proxy /api/* localhost:9001
+	reverse_proxy localhost:9002 localhost:9003 {
+		lb_policy round_robin
+		health_uri /health
+	}
+}
+
+proxy.example.com {
+	reverse_proxy https://upstream.internal:443 {
+		header_up Host {upstream_hostport}
+	}
+}
+
+sock.example.com {
+	reverse_proxy unix//run/app.sock
+}
+
+h2.example.com {
+	reverse_proxy h2c://localhost:8081
+}
+
+http://plain.example.com {
+	reverse_proxy 127.0.0.1:3000
+}
+
+*.apps.example.com {
+	tls {
+		dns cloudflare {env.CF_API_TOKEN}
+	}
+	@blog host blog.apps.example.com
+	handle @blog {
+		reverse_proxy localhost:2368
+	}
+	@wiki host wiki.apps.example.com
+	handle @wiki {
+		reverse_proxy localhost:3001
+	}
+	handle {
+		abort
+	}
+}
+
+routed.example.com {
+	route {
+		basicauth /private/* {
+			Bob $2a$14$Zkx19XLiW6VYouLHR5NmfOFU0z2GTNmpkT/5qqR7hx4IjWJPDhjvG
+		}
+		reverse_proxy localhost:4000
+	}
+}
+
+old.example.com {
+	basicauth {
+		Bob $2a$14$Zkx19XLiW6VYouLHR5NmfOFU0z2GTNmpkT/5qqR7hx4IjWJPDhjvG
+	}
+	reverse_proxy localhost:4100
+}
+
+import sites/*
