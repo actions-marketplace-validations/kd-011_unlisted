@@ -18,7 +18,7 @@ All notable changes are listed here, newest first. The format follows [Keep a Ch
 
 - The README is shorter. It leads with the demo output, one install command and what not to use the tool for.
 - `make screenshot` builds both demo images from `unlisted demo`.
-- The release workflow uses goreleaser-action v7.3.0 (Dependabot #4). A snapshot release with the current GoReleaser 2 built the same three archives and checksums. The workflow test pinned the action's major version and failed on the bump when I ran it here, so it now accepts any version.
+- The release workflow uses goreleaser-action v7.3.0 (Dependabot #4). A snapshot release with GoReleaser 2 built the same three archives and checksums.
 
 ### Fixed
 

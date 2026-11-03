@@ -1,6 +1,6 @@
 name: unlisted
 description: Compare the services in your registry with what your configs expose, and fail on the gaps.
-author: unlisted contributors
+author: kd-011
 branding:
   icon: eye-off
   color: gray-dark

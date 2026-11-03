@@ -5,6 +5,7 @@ package kit
 
 import (
 	"bytes"
+	"crypto/sha256"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -365,6 +366,13 @@ func TestHygieneFiles(t *testing.T) {
 	mustNotMatch(t, `[\w.+-]+@[\w-]+\.[\w.]+`, sec, "no email address in SECURITY.md")
 }
 
+// Hashed so this test does not publish the words it keeps out.
+var privateWordHashes = map[string]bool{
+	"1ee11af4ed5d63caf142a30a96ba124b1dde039d93b15b69858251295d4a92a6": true,
+	"c901b5fc9df5467fa2725d5d93d8d148961eab15c01a52ad8048a07ab395f83b": true,
+	"6d4830df0e10dbebf0e9f6740a1bef5ce67802594cff292d108f7ac33cbe3b43": true,
+}
+
 func TestKitFilesStayPublicSafe(t *testing.T) {
 	files := []string{"SECURITY.md", "CODE_OF_CONDUCT.md", "CHANGELOG.md", "CONTRIBUTING.md", "README.md",
 		".github/dependabot.yml", ".github/PULL_REQUEST_TEMPLATE.md", ".github/ISSUE_TEMPLATE/bug_report.yml",
@@ -374,9 +382,16 @@ func TestKitFilesStayPublicSafe(t *testing.T) {
 		files = append(files, ".github/workflows/"+w)
 	}
 	banned := regexp.MustCompile(`(?i)\x{2014}|/home/|gmail|Co-Authored-By`)
+	word := regexp.MustCompile(`[a-z0-9]+`)
 	for _, f := range files {
-		if m := banned.FindString(read(t, f)); m != "" {
+		text := read(t, f)
+		if m := banned.FindString(text); m != "" {
 			t.Errorf("%s contains %q", f, m)
+		}
+		for _, w := range word.FindAllString(strings.ToLower(text), -1) {
+			if privateWordHashes[fmt.Sprintf("%x", sha256.Sum256([]byte(w)))] {
+				t.Errorf("%s contains a private word", f)
+			}
 		}
 	}
 }

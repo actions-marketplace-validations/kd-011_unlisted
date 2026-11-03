@@ -37,7 +37,6 @@ type JSONSummary struct {
 	ExitCode   int            `json:"exit_code"`
 }
 
-// BuildJSON assembles the document.
 func BuildJSON(r check.Report, version string, failOn map[check.Type]bool, exit int) JSON {
 	j := JSON{
 		Schema: SchemaVersion, Version: version, Registry: r.Registry, Services: r.Services,
@@ -84,7 +83,6 @@ func BuildJSON(r check.Report, version string, failOn map[check.Type]bool, exit 
 	return j
 }
 
-// WriteJSON writes the document, indented, with a trailing newline.
 func WriteJSON(w io.Writer, j JSON) error {
 	enc := json.NewEncoder(w)
 	enc.SetIndent("", "  ")

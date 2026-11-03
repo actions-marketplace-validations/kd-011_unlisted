@@ -40,7 +40,6 @@ const header = `# unlisted registry: what you say you run.
 # (none | proxy | app | cloudflare-access), owner, note, ignore.
 `
 
-// Build creates the registry text for a snapshot.
 func Build(snap discover.Snapshot) Result {
 	var res Result
 	var entries []entry

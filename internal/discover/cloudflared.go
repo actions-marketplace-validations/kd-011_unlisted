@@ -84,7 +84,6 @@ func ParseCloudflared(data []byte, file string) (Result, error) {
 	return res, nil
 }
 
-// mapEntry returns the key and value nodes for key in a mapping node.
 func mapEntry(n *yaml.Node, key string) (*yaml.Node, *yaml.Node) {
 	if n == nil || n.Kind != yaml.MappingNode {
 		return nil, nil

@@ -65,7 +65,6 @@ Init flags:
 Exit codes: 0 clean, 1 findings matching --fail-on, 2 error.
 `
 
-// Run executes one invocation.
 func Run(args []string, stdout, stderr io.Writer) int {
 	cmd := "check"
 	if len(args) > 0 && !strings.HasPrefix(args[0], "-") {

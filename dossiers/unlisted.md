@@ -3,7 +3,7 @@ slug: unlisted
 name: unlisted
 repo: .
 status: active
-last_verified: 2026-11-02
+last_verified: 2026-11-03
 tags: [cli, go, homelab]
 ---
 
@@ -11,16 +11,16 @@ A read-only command line tool that compares the services you say you run with wh
 
 ## Features
 
-- Reports five finding types: unregistered, dead, noauth, drift and cert. <!-- src: internal/check/types.go:10-17 -->
-- Exits 0 when clean, 1 on findings that match `--fail-on`, and 2 on an error. <!-- src: internal/cli/cli.go:25-30 -->
-- Makes no network calls unless `--probe` is passed, and then contacts only hostnames from the registry. <!-- src: internal/cli/cli.go:158-160, internal/cli/cli.go:183 -->
-- A probe gives up after 5 seconds by default. <!-- src: internal/probe/probe.go:49-52 -->
-- A certificate with fewer than 14 days left is flagged as expiring soon. <!-- src: internal/check/check.go:39-42, internal/check/check.go:458 -->
-- A registry field it does not know is an error with a line number and a closest-match hint. <!-- src: internal/registry/registry.go:107-113 -->
-- A service with none of `host`, `port` or `url` is rejected. <!-- src: internal/registry/registry.go:147-149 -->
-- `init` refuses to overwrite an existing file unless `--force` is given. <!-- src: internal/cli/cli.go:214-216 -->
+- Reports five finding types: unregistered, dead, noauth, drift and cert. <!-- src: internal/check/types.go:9-16 -->
+- Exits 0 when clean, 1 on findings that match `--fail-on`, and 2 on an error. <!-- src: internal/cli/cli.go:28-33 -->
+- Makes no network calls unless `--probe` is passed, and then contacts only hostnames from the registry. <!-- src: internal/cli/cli.go:210-212, internal/cli/cli.go:236 -->
+- A probe gives up after 5 seconds by default. <!-- src: internal/probe/probe.go:47-50 -->
+- A certificate with fewer than 14 days left is flagged as expiring soon. <!-- src: internal/check/check.go:43-46, internal/check/check.go:478 -->
+- A registry field it does not know is an error with a line number and a closest-match hint. <!-- src: internal/registry/registry.go:105-111 -->
+- A service with none of `host`, `port` or `url` is rejected. <!-- src: internal/registry/registry.go:145-147 -->
+- `init` refuses to overwrite an existing file unless `--force` is given. <!-- src: internal/cli/cli.go:267-269 -->
 - A non-empty `NO_COLOR` turns colour off, and `--no-color` wins over everything else. <!-- src: internal/report/style.go:14-20 -->
-- A source that is missing or unreadable is recorded in the report and skipped, and never stops the run. <!-- src: internal/discover/types.go:104-128 -->
+- A source that is missing or unreadable is recorded in the report and skipped, and never stops the run. <!-- src: internal/discover/types.go:101-125 -->
 
 ## Architecture
 

@@ -15,7 +15,6 @@ import (
 	"time"
 )
 
-// Result is what one host answered.
 type Result struct {
 	Host     string `json:"host"`
 	Status   int    `json:"status,omitempty"`
@@ -37,7 +36,6 @@ func (r Result) Dead() bool {
 	return r.Err != "" || r.Status == 502 || r.Status == 503 || r.Status == 504
 }
 
-// Options controls a probe run.
 type Options struct {
 	Timeout time.Duration
 	// Dial overrides how hosts are reached; tests point it at a local server.

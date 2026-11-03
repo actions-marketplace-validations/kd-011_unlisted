@@ -25,7 +25,6 @@ type Input struct {
 // NoRegistryNote is shown when there was no registry file to compare against.
 const NoRegistryNote = "No registry.yml here, so this lists everything the machine exposes. Run unlisted init to write a registry from it, then edit the names and auth lines."
 
-// Report is the result of a check.
 type Report struct {
 	Registry string
 	Services int
@@ -41,7 +40,6 @@ type Report struct {
 	NoRegistry bool
 }
 
-// Run reconciles the registry against the snapshot.
 func Run(in Input) Report {
 	if in.CertWarnDays == 0 {
 		in.CertWarnDays = 14
@@ -224,7 +222,6 @@ func (c *checker) publicPort(p int) bool {
 	return false
 }
 
-// registered checks every declared service against what was found.
 func (c *checker) registered() {
 	for _, svc := range c.in.Registry.Services {
 		if svc.Ignore {
@@ -522,7 +519,6 @@ func sortFindings(fs []Finding) {
 	})
 }
 
-// Counts tallies findings by type.
 func (r Report) Counts() map[Type]int {
 	m := map[Type]int{}
 	for _, f := range r.Findings {
@@ -531,7 +527,6 @@ func (r Report) Counts() map[Type]int {
 	return m
 }
 
-// Failing counts findings of the types in failOn.
 func (r Report) Failing(failOn map[Type]bool) int {
 	n := 0
 	for _, f := range r.Findings {

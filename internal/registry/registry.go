@@ -44,7 +44,6 @@ type Service struct {
 	Line int `yaml:"-"`
 }
 
-// Registry is a parsed registry file.
 type Registry struct {
 	Path     string
 	Services []Service
@@ -52,7 +51,6 @@ type Registry struct {
 
 var knownFields = []string{"name", "host", "port", "url", "auth", "owner", "note", "ignore"}
 
-// Load reads and validates a registry file.
 func Load(path string) (*Registry, error) {
 	b, err := os.ReadFile(path)
 	if err != nil {

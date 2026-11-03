@@ -4,7 +4,6 @@ package check
 
 import "strings"
 
-// Type is a kind of finding.
 type Type string
 
 const (
@@ -38,7 +37,6 @@ func (t Type) Blurb() string {
 	return ""
 }
 
-// Severity ranks a finding.
 type Severity string
 
 const (

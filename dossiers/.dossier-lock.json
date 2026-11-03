@@ -7,17 +7,17 @@
           "text": "Reports five finding types: unregistered, dead, noauth, drift and cert.",
           "line": 14,
           "specs": [
-            "internal/check/types.go:10-17"
+            "internal/check/types.go:9-16"
           ],
-          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "head": "9558a659ab628ba3d215f4f08b2b610256a2b160",
           "files": {
             "internal/check/types.go": {
               "path": "internal/check/types.go",
-              "blob": "3622112eba18be838b765aa842f7e87ea0c4676c",
-              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "blob": "73d457b8ddbed0a094a3fd4f0782578aec0a715d",
+              "commit": "9558a659ab628ba3d215f4f08b2b610256a2b160",
               "range": {
-                "start": 10,
-                "end": 17,
+                "start": 9,
+                "end": 16,
                 "hash": "e7948052dd63320389e98123a78a47c140e550f8"
               }
             }
@@ -27,17 +27,17 @@
           "text": "Exits 0 when clean, 1 on findings that match `--fail-on`, and 2 on an error.",
           "line": 15,
           "specs": [
-            "internal/cli/cli.go:25-30"
+            "internal/cli/cli.go:28-33"
           ],
-          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "head": "9558a659ab628ba3d215f4f08b2b610256a2b160",
           "files": {
             "internal/cli/cli.go": {
               "path": "internal/cli/cli.go",
-              "blob": "e0208025b0a1888995938e0956edd8ee97f369a9",
-              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "blob": "a211b617c6d12a9b0ce9415e7fadc567d79f70b9",
+              "commit": "9558a659ab628ba3d215f4f08b2b610256a2b160",
               "range": {
-                "start": 25,
-                "end": 30,
+                "start": 28,
+                "end": 33,
                 "hash": "3a75c337dbd4a041e024762bf4f179ec4d9fcfbc"
               }
             }
@@ -47,28 +47,28 @@
           "text": "Makes no network calls unless `--probe` is passed, and then contacts only hostnames from the registry.",
           "line": 16,
           "specs": [
-            "internal/cli/cli.go:158-160",
-            "internal/cli/cli.go:183"
+            "internal/cli/cli.go:210-212",
+            "internal/cli/cli.go:236"
           ],
-          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "head": "9558a659ab628ba3d215f4f08b2b610256a2b160",
           "files": {
             "internal/cli/cli.go": {
               "path": "internal/cli/cli.go",
-              "blob": "e0208025b0a1888995938e0956edd8ee97f369a9",
-              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "blob": "a211b617c6d12a9b0ce9415e7fadc567d79f70b9",
+              "commit": "9558a659ab628ba3d215f4f08b2b610256a2b160",
               "range": {
-                "start": 158,
-                "end": 160,
+                "start": 210,
+                "end": 212,
                 "hash": "49711526b91ee0cdc6a0f16048d83c5e9fce7883"
               }
             },
-            "internal/cli/cli.go:183-183": {
+            "internal/cli/cli.go:236-236": {
               "path": "internal/cli/cli.go",
-              "blob": "e0208025b0a1888995938e0956edd8ee97f369a9",
-              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "blob": "a211b617c6d12a9b0ce9415e7fadc567d79f70b9",
+              "commit": "9558a659ab628ba3d215f4f08b2b610256a2b160",
               "range": {
-                "start": 183,
-                "end": 183,
+                "start": 236,
+                "end": 236,
                 "hash": "5c22834d91901b0154caf09597b776f16744c1a5"
               }
             }
@@ -78,17 +78,17 @@
           "text": "A probe gives up after 5 seconds by default.",
           "line": 17,
           "specs": [
-            "internal/probe/probe.go:49-52"
+            "internal/probe/probe.go:47-50"
           ],
-          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "head": "9558a659ab628ba3d215f4f08b2b610256a2b160",
           "files": {
             "internal/probe/probe.go": {
               "path": "internal/probe/probe.go",
-              "blob": "2e320319118997c5cf6dc42c4d894082aeaf242e",
-              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "blob": "189a9e1d4b70a81bea15d95974486f21f93c687f",
+              "commit": "9558a659ab628ba3d215f4f08b2b610256a2b160",
               "range": {
-                "start": 49,
-                "end": 52,
+                "start": 47,
+                "end": 50,
                 "hash": "cb1e2eec1003e88acbdb8bf9e20ac00f1afa2fc7"
               }
             }
@@ -98,28 +98,28 @@
           "text": "A certificate with fewer than 14 days left is flagged as expiring soon.",
           "line": 18,
           "specs": [
-            "internal/check/check.go:39-42",
-            "internal/check/check.go:458"
+            "internal/check/check.go:43-46",
+            "internal/check/check.go:478"
           ],
-          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "head": "9558a659ab628ba3d215f4f08b2b610256a2b160",
           "files": {
             "internal/check/check.go": {
               "path": "internal/check/check.go",
-              "blob": "d6bcc828bc2a6cb8b06ab52930c9550c3f934f9d",
-              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "blob": "bdfc834aa3dd9cca048be4b129822a590cc42ccd",
+              "commit": "9558a659ab628ba3d215f4f08b2b610256a2b160",
               "range": {
-                "start": 39,
-                "end": 42,
+                "start": 43,
+                "end": 46,
                 "hash": "d9a629b290f23e9f22328d94af7e0ca062d9c6c1"
               }
             },
-            "internal/check/check.go:458-458": {
+            "internal/check/check.go:478-478": {
               "path": "internal/check/check.go",
-              "blob": "d6bcc828bc2a6cb8b06ab52930c9550c3f934f9d",
-              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "blob": "bdfc834aa3dd9cca048be4b129822a590cc42ccd",
+              "commit": "9558a659ab628ba3d215f4f08b2b610256a2b160",
               "range": {
-                "start": 458,
-                "end": 458,
+                "start": 478,
+                "end": 478,
                 "hash": "cf245e0c2734ff1146e3819e50321507da2539cb"
               }
             }
@@ -129,17 +129,17 @@
           "text": "A registry field it does not know is an error with a line number and a closest-match hint.",
           "line": 19,
           "specs": [
-            "internal/registry/registry.go:107-113"
+            "internal/registry/registry.go:105-111"
           ],
-          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "head": "9558a659ab628ba3d215f4f08b2b610256a2b160",
           "files": {
             "internal/registry/registry.go": {
               "path": "internal/registry/registry.go",
-              "blob": "55e1a9c4fb7ea16c09fdcc90434ea849a1b942dd",
-              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "blob": "a04bd20cf2a9599d626a81037b41c9c4d925e8fe",
+              "commit": "9558a659ab628ba3d215f4f08b2b610256a2b160",
               "range": {
-                "start": 107,
-                "end": 113,
+                "start": 105,
+                "end": 111,
                 "hash": "33a8d4ee15cebc82ecb3b359288a14b8332a68a2"
               }
             }
@@ -149,17 +149,17 @@
           "text": "A service with none of `host`, `port` or `url` is rejected.",
           "line": 20,
           "specs": [
-            "internal/registry/registry.go:147-149"
+            "internal/registry/registry.go:145-147"
           ],
-          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "head": "9558a659ab628ba3d215f4f08b2b610256a2b160",
           "files": {
             "internal/registry/registry.go": {
               "path": "internal/registry/registry.go",
-              "blob": "55e1a9c4fb7ea16c09fdcc90434ea849a1b942dd",
-              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "blob": "a04bd20cf2a9599d626a81037b41c9c4d925e8fe",
+              "commit": "9558a659ab628ba3d215f4f08b2b610256a2b160",
               "range": {
-                "start": 147,
-                "end": 149,
+                "start": 145,
+                "end": 147,
                 "hash": "40fa24fb9163cc3149bf292d32fe190bb9cb2c83"
               }
             }
@@ -169,17 +169,17 @@
           "text": "`init` refuses to overwrite an existing file unless `--force` is given.",
           "line": 21,
           "specs": [
-            "internal/cli/cli.go:214-216"
+            "internal/cli/cli.go:267-269"
           ],
-          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "head": "9558a659ab628ba3d215f4f08b2b610256a2b160",
           "files": {
             "internal/cli/cli.go": {
               "path": "internal/cli/cli.go",
-              "blob": "e0208025b0a1888995938e0956edd8ee97f369a9",
-              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "blob": "a211b617c6d12a9b0ce9415e7fadc567d79f70b9",
+              "commit": "9558a659ab628ba3d215f4f08b2b610256a2b160",
               "range": {
-                "start": 214,
-                "end": 216,
+                "start": 267,
+                "end": 269,
                 "hash": "cf875eea8de2e924c9ef8a4390e4338dcf729cf5"
               }
             }
@@ -191,7 +191,7 @@
           "specs": [
             "internal/report/style.go:14-20"
           ],
-          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "head": "9558a659ab628ba3d215f4f08b2b610256a2b160",
           "files": {
             "internal/report/style.go": {
               "path": "internal/report/style.go",
@@ -209,18 +209,18 @@
           "text": "A source that is missing or unreadable is recorded in the report and skipped, and never stops the run.",
           "line": 23,
           "specs": [
-            "internal/discover/types.go:104-128"
+            "internal/discover/types.go:101-125"
           ],
-          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "head": "9558a659ab628ba3d215f4f08b2b610256a2b160",
           "files": {
             "internal/discover/types.go": {
               "path": "internal/discover/types.go",
-              "blob": "0c995bbd32550975c1b7e6822a670ef36b88e19e",
-              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "blob": "65048ee6819be92a878ef7141fe2d732058a8f4b",
+              "commit": "9558a659ab628ba3d215f4f08b2b610256a2b160",
               "range": {
-                "start": 104,
-                "end": 128,
-                "hash": "5ab21f419928590a29602e3759f9a1a84a58b73c"
+                "start": 101,
+                "end": 125,
+                "hash": "b292830363dade3631ad6e834f2e2eb66b7aacb2"
               }
             }
           }
@@ -232,12 +232,12 @@
             "Makefile:4",
             ".github/workflows/ci.yml:30"
           ],
-          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "head": "9558a659ab628ba3d215f4f08b2b610256a2b160",
           "files": {
             "Makefile": {
               "path": "Makefile",
-              "blob": "4795e37e85bced88b3c47757aae455fb45c2a444",
-              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "blob": "e1a47e9aa169617ea47d59491c823bf138e86bdf",
+              "commit": "8603ae966201a44d3b6ae34248ed65bd3b1d1d7c",
               "range": {
                 "start": 4,
                 "end": 4,
@@ -246,8 +246,8 @@
             },
             ".github/workflows/ci.yml": {
               "path": ".github/workflows/ci.yml",
-              "blob": "c96d1046f855e526e8df4cf49ed2999261240b5a",
-              "commit": "ae5e0e5eab85590d36556f37926844d4e538b250",
+              "blob": "bccaa59803db7ce2281b9897d1e8367cb59dca6d",
+              "commit": "8603ae966201a44d3b6ae34248ed65bd3b1d1d7c",
               "range": {
                 "start": 30,
                 "end": 30,
@@ -262,7 +262,7 @@
           "specs": [
             ".goreleaser.yml:15-19"
           ],
-          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "head": "9558a659ab628ba3d215f4f08b2b610256a2b160",
           "files": {
             ".goreleaser.yml": {
               "path": ".goreleaser.yml",
@@ -282,12 +282,12 @@
           "specs": [
             "action.yml:33-36"
           ],
-          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "head": "9558a659ab628ba3d215f4f08b2b610256a2b160",
           "files": {
             "action.yml": {
               "path": "action.yml",
-              "blob": "c3901feadd4fadf70bfb05968d2186aeed504f37",
-              "commit": "82c1f22fb1dacef34ac62921835c4f5189a00b33",
+              "blob": "9d8b5f4aa1f5486ea6ac56c9c38d2ed26143fb62",
+              "commit": "9558a659ab628ba3d215f4f08b2b610256a2b160",
               "range": {
                 "start": 33,
                 "end": 36,
@@ -303,12 +303,12 @@
             ".github/workflows/ci.yml:9-10",
             ".github/workflows/ci.yml:26-28"
           ],
-          "head": "a401653f39e5661b59958457268227c3c9488628",
+          "head": "9558a659ab628ba3d215f4f08b2b610256a2b160",
           "files": {
             ".github/workflows/ci.yml": {
               "path": ".github/workflows/ci.yml",
-              "blob": "c96d1046f855e526e8df4cf49ed2999261240b5a",
-              "commit": "ae5e0e5eab85590d36556f37926844d4e538b250",
+              "blob": "bccaa59803db7ce2281b9897d1e8367cb59dca6d",
+              "commit": "8603ae966201a44d3b6ae34248ed65bd3b1d1d7c",
               "range": {
                 "start": 9,
                 "end": 10,
@@ -317,8 +317,8 @@
             },
             ".github/workflows/ci.yml:26-28": {
               "path": ".github/workflows/ci.yml",
-              "blob": "c96d1046f855e526e8df4cf49ed2999261240b5a",
-              "commit": "ae5e0e5eab85590d36556f37926844d4e538b250",
+              "blob": "bccaa59803db7ce2281b9897d1e8367cb59dca6d",
+              "commit": "8603ae966201a44d3b6ae34248ed65bd3b1d1d7c",
               "range": {
                 "start": 26,
                 "end": 28,
@@ -328,8 +328,8 @@
           }
         }
       },
-      "pinnedAt": "2026-11-02T13:34:56.733Z",
-      "head": "a401653f39e5661b59958457268227c3c9488628"
+      "pinnedAt": "2026-11-03T07:40:39.427Z",
+      "head": "9558a659ab628ba3d215f4f08b2b610256a2b160"
     }
   }
 }

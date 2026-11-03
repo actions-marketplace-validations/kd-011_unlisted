@@ -84,8 +84,8 @@ func TestMissingRegistryHintsAtInit(t *testing.T) {
 	}
 }
 
-// The text report is the launch screenshot. The committed copy must match the
-// code, or the README is lying about what the tool prints.
+// The text report is the README screenshot, so the committed copy has to match
+// what the code prints.
 func TestDemoReportMatchesDocs(t *testing.T) {
 	inRepo(t)
 	code, out, _ := run(with(demo, "--no-color")...)
@@ -352,8 +352,8 @@ func chdir(t *testing.T, dir string) {
 	t.Cleanup(func() { os.Chdir(old) })
 }
 
-// A stranger who ran go install has no checkout, so the demo has to be inside
-// the binary.
+// Someone who ran go install has no checkout, so the demo has to be in the
+// binary.
 func TestDemoCommandNeedsNoFiles(t *testing.T) {
 	tmp := t.TempDir()
 	t.Setenv("TMPDIR", tmp)

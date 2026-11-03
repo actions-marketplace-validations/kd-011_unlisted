@@ -52,7 +52,6 @@ func (l Listener) Name() string {
 	return ""
 }
 
-// Result is what one source found.
 type Result struct {
 	Exposures []Exposure
 	Listeners []Listener
@@ -62,13 +61,11 @@ type Result struct {
 	Paths     []string
 }
 
-// Source is one discovery mechanism.
 type Source interface {
 	Name() string
 	Discover(env Env) (Result, error)
 }
 
-// Status of one source after a run.
 type Status struct {
 	Name   string   `json:"name"`
 	State  string   `json:"state"` // ok | absent | skipped | error
@@ -102,7 +99,7 @@ func AllSources() []Source {
 }
 
 // Run executes every source. A source error becomes a Status, never a return
-// value: that is the graceful-degradation contract.
+// value, so one broken source cannot stop the report.
 func Run(env Env, sources []Source) Snapshot {
 	var snap Snapshot
 	snap.Units = map[string]string{}
