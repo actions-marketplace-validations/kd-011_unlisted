@@ -4,6 +4,12 @@ All notable changes are listed here, newest first. The format follows [Keep a Ch
 
 ## Unreleased
 
+## 0.2.1 - 2026-11-09
+
+### Changed
+
+- The Action is now named `unlisted-check`, because the Marketplace does not allow a name that is also a GitHub account. `uses: kd-011/unlisted@v0` works as before.
+
 ## 0.2.0 - 2026-11-03
 
 ### Added
