@@ -1,4 +1,4 @@
-name: unlisted
+name: unlisted-check
 description: Compare the services in your registry with what your configs expose, and fail on the gaps.
 author: kd-011
 branding:
