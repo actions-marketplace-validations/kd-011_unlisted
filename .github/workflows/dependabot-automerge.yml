@@ -31,7 +31,7 @@ jobs:
 
       # The gate script lives on the base branch; PR code is never executed.
       - name: Check out the base branch
-        uses: actions/checkout@v7
+        uses: actions/checkout@v7.0.1
         with:
           ref: ${{ github.event.pull_request.base.sha }}
           persist-credentials: false
