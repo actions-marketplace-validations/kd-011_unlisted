@@ -53,7 +53,7 @@ unlisted version
 | Flag | Meaning |
 | --- | --- |
 | `-f FILE` | Registry file. Default `registry.yml`. |
-| `--json` | Machine-readable output. Schema in [docs/json.md](docs/json.md). |
+| `--json` | Machine-readable output. Schema in [docs/json.md](json.md). |
 | `--format markdown` | A report you can paste into an issue or a README. |
 | `--probe` | HTTPS `HEAD` (falling back to `GET`) each registry hostname with a 5 second timeout; reports status and TLS expiry. Off by default. |
 | `--no-color` | Plain output. `NO_COLOR` is honoured, and colour is off when stdout is not a terminal. `CLICOLOR_FORCE=1` forces it on. |
